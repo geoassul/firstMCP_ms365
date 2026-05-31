@@ -3,20 +3,11 @@ import express from 'express';
 const app = express();
 app.use(express.json());
 
-// Permitimos que Express escuche en ambas rutas simultáneamente
 app.post(['/', '/mcp'], (req, res) => {
-  const { method } = req.body;
+  // Capturamos el método enviado en el body (manejamos un fallback por si viene vacío)
+  const method = req.body?.method;
 
-  if (method === 'initialize') {
-    return res.status(200).json({
-      protocolVersion: "2024-11-05",
-      capabilities: {
-        tools: {} 
-      },
-      serverInfo: { name: "ServidorAbiertoGeorge", version: "1.0.0" }
-    });
-  }
-
+  // Si Microsoft solicita explícitamente el catálogo de herramientas
   if (method === 'tools/list') {
     return res.status(200).json({
       tools: [
@@ -29,8 +20,16 @@ app.post(['/', '/mcp'], (req, res) => {
     });
   }
 
-  return res.status(444).json({ error: "Método MCP no soportado dentro de este endpoint" });
+  // Para 'initialize' o cualquier otra petición de control/saludo de Microsoft,
+  // respondemos con éxito 200 OK para no bloquear el canal.
+  return res.status(200).json({
+    protocolVersion: "2024-11-05",
+    capabilities: {
+      tools: {} 
+    },
+    serverInfo: { name: "ServidorAbiertoGeorge", version: "1.0.0" }
+  });
 });
 
 const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => console.log(`Servidor MCP Abierto escuchando en puerto ${PORT}`));
+app.listen(PORT, () => console.log(`Servidor MCP Abierto y Flexible en puerto ${PORT}`));
