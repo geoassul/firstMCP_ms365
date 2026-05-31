@@ -34,7 +34,7 @@ app.post(['/', '/mcp'], (req, res) => {
         tools: {} 
       },
       serverInfo: { 
-        name: "ServidorAbiertoGeorge", 
+        name: "m365-mcp-server", 
         version: "1.0.0" 
       }
     }
