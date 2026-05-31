@@ -4,4 +4,6 @@ COPY package*.json ./
 RUN npm ci --only=production
 COPY . .
 EXPOSE 8080
-CMD ["npx", "@softeria/ms-365-mcp-server", "--http", "8080"]
+# Cambiamos Softeria por tu script propio abierto
+CMD ["node", "index.js"]
+
