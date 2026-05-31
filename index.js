@@ -4,7 +4,7 @@ const app = express();
 app.use(express.json());
 
 // 1. Responder al Handshake del método "initialize" de Copilot Studio
-app.post('/mcp', (req, res) => {
+app.post('/', (req, res) => {
   const { method } = req.body;
 
   if (method === 'initialize') {
